@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "5845310443",
+    "project_id": "one-drive-22a49",
+    "storage_bucket": "one-drive-22a49.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:5845310443:android:dd7ffbe19da9c6b50f57ae",
+        "android_client_info": {
+          "package_name": "com.chikakraft.onedrive"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "5845310443-g4qq749su21pqemp3num28l3j0i6tr4o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC153gK-LphvzV0sa5i6zvKp7KOevl22eI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "5845310443-g4qq749su21pqemp3num28l3j0i6tr4o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:5845310443:android:1d28c6c1ae5433720f57ae",
+        "android_client_info": {
+          "package_name": "com.example.myapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "5845310443-g4qq749su21pqemp3num28l3j0i6tr4o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC153gK-LphvzV0sa5i6zvKp7KOevl22eI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "5845310443-g4qq749su21pqemp3num28l3j0i6tr4o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
