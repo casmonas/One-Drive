@@ -1,7 +1,10 @@
 package com.chikakraft.onedrive;
 
+import android.Manifest;
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -13,10 +16,14 @@ import android.widget.Toast;
 
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.chikakraft.onedrive.fragments.HomeFragment;
+import com.chikakraft.onedrive.services.Constants;
+import com.chikakraft.onedrive.services.LocationService;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -29,6 +36,7 @@ import com.chikakraft.onedrive.databinding.ActivityHomeBinding;
 
 public class Home extends AppCompatActivity {
 
+    private static final int REQUEST_CODE_LOCATION_PERMISSION = 1;
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityHomeBinding binding;
 
@@ -191,11 +199,65 @@ public class Home extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if(backpressed + 100 > System.currentTimeMillis()){
+        if(backpressed + 1000 > System.currentTimeMillis()){
             super.onBackPressed();
         }else {
             Toast.makeText(this, "Press once again to exit.", Toast.LENGTH_SHORT).show();
         }
         backpressed = System.currentTimeMillis();
+    }
+
+    private boolean isLocalServiceRunning(){
+        ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        if(activityManager!=null){
+            for(ActivityManager.RunningServiceInfo serviceInfo: activityManager.getRunningServices(Integer.MAX_VALUE)){
+                if(LocationService.class.getName().equals(serviceInfo.service.getClassName())){
+                    if(serviceInfo.foreground){
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+        return false;
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        if(ContextCompat.checkSelfPermission(
+                getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION
+        ) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(
+                    Home.this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    REQUEST_CODE_LOCATION_PERMISSION
+            );
+        }else{
+            startLocationService();
+        }
+    }
+
+    private void startLocationService() {
+        if(!isLocalServiceRunning()){
+            Intent intent = new Intent(getApplicationContext(),LocationService.class);
+            intent.setAction(Constants.ACTION_START_LOCATION_SERVICE);
+            startService(intent);
+        }
+    }
+
+    private void stopLocationService() {
+        if(isLocalServiceRunning()){
+            Intent intent = new Intent(getApplicationContext(),LocationService.class);
+            intent.setAction(Constants.ACTION_STOP_LOCATION_SERVICE);
+            stopService(intent);
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        stopLocationService();
     }
 }
